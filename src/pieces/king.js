@@ -1,3 +1,4 @@
+import { isSameColumn, isSameDiagonal, isSameRow } from '../helpers';
 import Piece from './piece';
 
 const whiteURL = "https://upload.wikimedia.org/wikipedia/commons/4/42/Chess_klt45.svg"
@@ -8,7 +9,19 @@ export default class King extends Piece {
         super(player, (player === 1 ? whiteURL : blackURL));
     }
 
-    isMovePossible(src, dest) {
+    isMovePossible(src, dest, squares) {
+        if (squares[dest] && squares[dest].player === this.player) 
+            return false;
+        return (
+            (src - 9 === dest && isSameDiagonal(src, dest)) ||
+            (src - 8 === dest && isSameColumn(src, dest)) ||
+            (src - 7 === dest && isSameDiagonal(src, dest)) ||
+            (src + 1 === dest && isSameRow(src, dest)) ||
+            (src + 9 === dest && isSameDiagonal(src, dest)) ||
+            (src + 8 === dest && isSameColumn(src, dest)) ||
+            (src + 7 === dest && isSameDiagonal(src, dest)) ||
+            (src - 1 === dest && isSameRow(src, dest))
+        );
     }
 
     /**

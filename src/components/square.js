@@ -7,7 +7,6 @@ export default function Square(props) {
         <button className= {"square " + props.shade}
                 style={props.style}
                 onClick={props.onClick}
-                key={props.keyVal}
         ></button>
     );
 }

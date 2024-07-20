@@ -10,7 +10,7 @@ export default class Board extends React.Component {
             <Square
                 shade={((Math.floor(i / 8) + i % 8) % 2 === 0) ? "light-square" : "dark-square"}
                 style={this.props.squares[i] ? this.props.squares[i].style : null}
-                keyVal={i}
+                key={`square${i}`}
                 onClick={() => this.props.onClick(i)}
             />
         );
@@ -23,7 +23,7 @@ export default class Board extends React.Component {
             for (let j = 0; j < 8; j++) {
                 row.push(this.renderSquare(i * 8 + j));
             }
-            board.push(<div key={i} className="board-row">{row}</div>);
+            board.push(<div key={`row${i}`} className="board-row">{row}</div>);
         }
 
         return <>{board}</>;
