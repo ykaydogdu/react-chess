@@ -9,8 +9,19 @@ export default class King extends Piece {
         super(player, (player === 1 ? whiteURL : blackURL));
     }
 
-    isMovePossible(src, dest, squares) {
-        if (squares[dest] && squares[dest].player === this.player) 
+    getPossibleMoves(src, pieces) {
+        let possibleMoves = [], direction = [-9, -8, -7, 1, 9, 8, 7, -1];
+        for (let i = 0; i < direction.length; i++) {
+            let dest = src + direction[i];
+            if (this.isMovePossible(src, dest, pieces)) {
+                possibleMoves.push(dest);
+            }
+        }
+        return possibleMoves;
+    }
+
+    isMovePossible(src, dest, pieces) {
+        if (pieces[dest] && pieces[dest].player === this.player) 
             return false;
         return (
             (src - 9 === dest && isSameDiagonal(src, dest)) ||

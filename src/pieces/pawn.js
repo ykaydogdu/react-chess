@@ -9,10 +9,27 @@ export default class Pawn extends Piece {
         this.startingPosition = (player === 1 ? [48,49,50,51,52,53,54,55] : [8,9,10,11,12,13,14,15]);
     }
 
-    isMovePossible(src, dest, squares) {
+    getPossibleMoves(src, pieces) {
+        let possibleMoves = [], increment = (this.player === 1 ? -8 : 8);
+        if (pieces[src + increment] === null) {
+            possibleMoves.push(src + increment);
+            if (this.startingPosition.indexOf(src) !== -1 && pieces[src + 2 * increment] === null) {
+                possibleMoves.push(src + 2 * increment);
+            }
+        }
+        if (pieces[src + increment + 1] && pieces[src + increment + 1].player !== this.player) {
+            possibleMoves.push(src + increment + 1);
+        }
+        if (pieces[src + increment - 1] && pieces[src + increment - 1].player !== this.player) {
+            possibleMoves.push(src + increment - 1);
+        }
+        return possibleMoves;
+    }
+
+    isMovePossible(src, dest, pieces) {
         let increment = (this.player === 1 ? -8 : 8);
-        if (squares[dest]) {
-            if (squares[dest].player === this.player) {
+        if (pieces[dest]) {
+            if (pieces[dest].player === this.player) {
                 return false;
             }
 
@@ -22,11 +39,11 @@ export default class Pawn extends Piece {
             }
         } else {
             // Starting move
-            if (this.startingPosition.indexOf(src) !== -1 && dest === src + 2 * increment && !squares[dest]) {
+            if (this.startingPosition.indexOf(src) !== -1 && dest === src + 2 * increment && !pieces[dest]) {
                 return true;
             }
             // Move
-            if (dest === src + increment && !squares[dest]) {
+            if (dest === src + increment && !pieces[dest]) {
                 return true;
             }   
         }

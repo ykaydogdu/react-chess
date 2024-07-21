@@ -4,14 +4,15 @@ import "../index.css";
 import Square from "./square.js";
 
 export default class Board extends React.Component {
-
     renderSquare(i) { 
         return (
             <Square
                 shade={((Math.floor(i / 8) + i % 8) % 2 === 0) ? "light-square" : "dark-square"}
-                style={this.props.squares[i] ? this.props.squares[i].style : null}
+                style={this.props.squares[i].style}
+                piece={this.props.pieces[i] ? this.props.pieces[i].style : null}
                 key={`square${i}`}
                 onClick={() => this.props.onClick(i)}
+                overlay={this.props.squares[i].overlay}
             />
         );
     }

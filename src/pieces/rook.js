@@ -9,10 +9,26 @@ export default class Rook extends Piece {
         super(player, (player === 1 ? whiteURL : blackURL));
     }
 
-    isMovePossible(src, dest, squares) {
-        if (squares[dest] && squares[dest].player === this.player)
+    getPossibleMoves(src, pieces) {
+        let possibleMoves = [], direction = [-8, -1, 1, 8];
+        for (let i = 0; i < direction.length; i++) {
+            let dest = src + direction[i];
+            while (dest < 64 && dest >= 0) {
+                if (this.isMovePossible(src, dest, pieces)) {
+                    possibleMoves.push(dest);
+                    if (pieces[dest] && pieces[dest].player !== this.player)
+                        break;
+                    dest += direction[i];
+                } else break;
+            }
+        }
+        return possibleMoves;
+    }
+
+    isMovePossible(src, dest, pieces) {
+        if (pieces[dest] && pieces[dest].player === this.player)
             return false;
-        return isPathClean(this.getSrcToDestPath(src, dest), squares) && (isSameRow(src, dest) || isSameColumn(src, dest));
+        return isPathClean(this.getSrcToDestPath(src, dest), pieces) && (isSameRow(src, dest) || isSameColumn(src, dest));
     }
 
     /**

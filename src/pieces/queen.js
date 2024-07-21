@@ -9,10 +9,28 @@ export default class Queen extends Piece {
         super(player, (player === 1 ? whiteURL : blackURL));
     }
 
-    isMovePossible(src, dest, squares) {
-        if (squares[dest] && squares[dest].player === this.player)
+    getPossibleMoves(src, pieces) {
+        let possibleMoves = [], direction = [-9, -8, -7, -1, 1, 7, 8, 9];
+        for (let i = 0; i < direction.length; i++) {
+            let dest = src + direction[i];
+            while (dest < 64 && dest >= 0) {
+                if (this.isMovePossible(src, dest, pieces)) {
+                    possibleMoves.push(dest);
+                    if (pieces[dest] && pieces[dest].player !== this.player)
+                        break;
+                    if (dest % 8 === 0 || dest % 8 === 7)
+                        break;
+                } else break;
+                dest += direction[i];
+            }
+        }
+        return possibleMoves;
+    }
+
+    isMovePossible(src, dest, pieces) {
+        if (pieces[dest] && pieces[dest].player === this.player)
             return false;
-        return isPathClean(this.getSrcToDestPath(src, dest), squares) && (isSameRow(src, dest) || isSameColumn(src, dest) || isSameDiagonal(src, dest));
+        return isPathClean(this.getSrcToDestPath(src, dest), pieces) && (isSameRow(src, dest) || isSameColumn(src, dest) || isSameDiagonal(src, dest));
     }
 
     /**
